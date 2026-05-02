@@ -12,7 +12,7 @@ app.config['MYSQL_DB'] = 'expense_tracker'
 
 mysql = MySQL(app)
 
-# 🔥 Create tables
+
 def create_table():
     cursor = mysql.connection.cursor()
 
@@ -49,7 +49,7 @@ def create_table():
     cursor.close()
 
 
-# 🏠 Home Page
+
 @app.route('/')
 def index():
     if 'user_id' not in session:
@@ -69,7 +69,6 @@ def index():
 
     cursor = mysql.connection.cursor()
 
-    # 📅 FILTER LOGIC
     if filter_type == 'today':
         cursor.execute(
             "SELECT * FROM expenses WHERE user_id=%s AND date = CURDATE()",
@@ -111,7 +110,7 @@ def index():
         )
         total = cursor.fetchone()[0]
 
-    # 📊 Monthly Report
+   
     cursor.execute("""
         SELECT MONTH(date), YEAR(date), SUM(amount)
         FROM expenses
@@ -131,7 +130,7 @@ def index():
     reminders=reminders
 )
 
-# ➕ Add Expense
+
 @app.route('/add', methods=['POST'])
 def add_expense():
     if 'user_id' not in session:
@@ -160,7 +159,7 @@ def add_expense():
         return str(e)
 
 
-# ❌ Delete
+
 @app.route('/delete/<int:id>')
 def delete(id):
     if 'user_id' not in session:
@@ -179,7 +178,7 @@ def delete(id):
     return redirect('/')
 
 
-# ✏️ Edit
+
 @app.route('/edit/<int:id>')
 def edit(id):
     if 'user_id' not in session:
@@ -198,7 +197,7 @@ def edit(id):
     return render_template('edit.html', expense=expense)
 
 
-# 🔄 Update
+
 @app.route('/update/<int:id>', methods=['POST'])
 def update(id):
     if 'user_id' not in session:
@@ -228,7 +227,7 @@ def update(id):
         return str(e)
 
 
-# 🔐 Register
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -249,7 +248,7 @@ def register():
 
 
 
-# 🔑 Login
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -291,7 +290,7 @@ def add_reminder():
     return redirect('/')
 
 
-# 🚪 Logout
+
 @app.route('/logout')
 def logout():
     session.clear()
